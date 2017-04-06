@@ -45,6 +45,9 @@ file.close()
 # with语句自动调用close()方法
 with open('文件路径', '标识符') as file:
     print(file.read())
+# python2.7之后with又支持同时对多个文件的上下文进行管理
+with open('文件路径', '标识符') as file, open('文件路径2', '标识符') as file1:
+    pass
 
 # read()一次性读取最方便;不确定文件大小read(size)比较保险；如果是配置文件调用readlines()最方便
 for line in file.readines():
@@ -62,5 +65,6 @@ file = open('文件路径', 'r', encoding='gbk', errors='ignore')
 
 # 写文件
 file = open('文件路径', 'w')
+
 file.write('Hello word!')
 file.close()
