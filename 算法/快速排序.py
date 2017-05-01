@@ -9,45 +9,71 @@
 快速排序
 
 """
+import time
 
 
-def quick_sort(data, start, end):
-    # 起始如果大于等于结束循环停止
-    if start >= end:
-        return
-    # 设置K为数组的起始值
-    K = data[start]
-    # 数组的开始下标
-    left_flag = start
-    # 数组的结束下标
-    right_flag = end
-    # 当结开始下标跟结束下标重合 经过这一个循环数组右边都是大于起始值的无需集合左边都是小于起始值的无序集合
-    while left_flag < right_flag:
-        # 当前值从右向左找到小于等于起始值 获取当前值的下标
-        while left_flag < right_flag and data[right_flag] > K:
-            right_flag -= 1
-        # 把当前值跟起始值调换
-        temp = data[left_flag]
-        data[left_flag] = data[right_flag]
-        data[right_flag] = temp
-        # 再当前之从左向右寻找 找到大于起始值 获取当前只的下标
-        while left_flag < right_flag and data[left_flag] <= K:  # 开始往右寻找
-            left_flag += 1
-        # 把当前值跟起始值调换
-        temp = data[left_flag]
-        data[left_flag] = data[right_flag]
-        data[right_flag] = temp
-    print(data)
+# 定义时间装饰器
+def cal_time(func):
+    def wrapper(*args, **kwargs):
+        ti = time.time()
+        x = func(*args, **kwargs)
+        ti2 = time.time()
+        print("Time cost", ti2 - ti)
+        return x
 
-    # 开始把问题拆分采用递归继续排序
-    # 这个时候的left_flag=right_flag为第一次循环的中间值
-    quick_sort(data, start, left_flag - 1)
-    quick_sort(data, left_flag + 1, end)
+    return wrapper
 
 
 arry = [326, 128, 343, 169, 471, 184, 279, 347, 285, 544, 426]
-# 循环20次
 
-# 调用快速排序
-quick_sort(arry, 0, len(arry) - 1)
+
+def quick_sort_x(data, left, right):
+    # 当左坐标大于右坐标代表排序完成
+    if left < right:
+        # 获取一轮排序后的中间值
+        mid = partition(data, left, right)
+        # 通过中间值拆分左边继续下一轮排序 递归
+        quick_sort_x(data, left, mid - 1)
+        # 通过中间值拆分右边继续下一轮排序 递归
+        quick_sort_x(data, mid + 1, right)
+
+
+def partition(data, left, right):
+    #  把左边的值找一个地方存起来留出一个空位
+    tmp = data[left]
+    while left < right:
+        # 开始从右向左寻找
+        while left < right and data[right] >= tmp:
+            right -= 1
+        # 当找到比这个数小的值存到左边空位上
+        data[left] = data[right]
+        # 开始从左向右寻找
+        while left < right and data[left] <= tmp:
+            left += 1
+        # 当找到比这个数大的值存到右边的空位上
+        data[right] = data[left]
+    # 最后把开始的值存到数组保留的空位上
+    data[left] = tmp
+    # 返回当前中间值的下标
+    return left
+
+
+@cal_time  # 装饰器直接写在包含递归的方法上出问题只能先调用递归方法
+def quick_sort(data):
+    return quick_sort_x(data, 0, len(data) - 1)
+
+
+quick_sort(arry)
 print(arry)
+
+
+@cal_time
+# 系统的快速排序 使用c写的所以速度快
+def sys_sort(data):
+    return data.sort()
+
+
+# 如果需要设置系统最大递归数
+import sys
+
+sys.setrecursionlimit(100000)

@@ -10,21 +10,6 @@
 只到找到一个大于的值插入这个位置。
 时间复杂度O(n2)
 """
-
-
-def insertion_sort(data):
-    # 数组第一个值不需要循环
-    for i in range(1, len(data)):
-        position = i  # 刚开始往左走的第一个位置
-        current_val = data[i]  # 先把当前值存起来
-        # 因为子循环不确定循环的次数所以用while条件来控制
-        while position > 0 and current_val < data[position - 1]:
-            # 如果保存值比 当前比较值小就把当前值往后赋值一位
-            data[position] = data[position - 1]
-            position -= 1
-        data[position] = current_val
-
-
 # 创建一个不规则数组
 import random
 
@@ -34,6 +19,20 @@ for i in range(20):
     # 每次生成一个随机数
     arry.append(random.randrange(1000))
 
+
+def insert_sort(data):
+    for i in range(1, len(data)):
+        tmp = data[i]
+        j = i - 1
+        while j >= 0 and data[j] > tmp:
+            data[j + i] = data[j]
+            j = j - 1
+        data[j + 1] = tmp
+
+
 # 调用插入排序
-insertion_sort(arry)
+insert_sort(arry)
 print(arry)
+
+
+# 优化可以用二分查找

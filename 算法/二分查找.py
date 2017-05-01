@@ -19,6 +19,7 @@ def cal_time(func):
 
     return wrapper
 
+
 @cal_time
 def bin_searvch(data_set, val):
     low = 0
@@ -40,6 +41,7 @@ import random
 修改二分查找代码，输入学生id，输出该学生在列表中的下标，并输出完整学生信息。
 """
 
+
 @cal_time
 # 生成测试数组字典
 def random_list(n):
@@ -55,13 +57,14 @@ def random_list(n):
         result.append({'id': id, 'name': name, 'age': age})
     return result
 
+
 @cal_time
 def binary_chop(data_set, val):
     """
 
     :param data_set: 需要查找的数组
     :param val: 查找的值
-    :return:
+    :return:完整学生信息
     """
     low = 0
     high = len(data_set) - 1
